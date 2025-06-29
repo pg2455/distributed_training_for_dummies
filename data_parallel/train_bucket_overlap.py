@@ -157,7 +157,6 @@ class DataParallelBucket(torch.nn.Module):
         def param_hook(grad):
             print(f"****** Param hook called for {param.shape}. Main grad: {param.main_grad.shape}")
 
-            # assert param.grad is not None
             # Accumulate gradients into param.main_grad.
             param.main_grad.add_(grad.data)
             # param.grad = None # clear the gradient from the param.

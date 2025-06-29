@@ -6,9 +6,6 @@ import torch.distributed as dist
 from torch.utils.data.distributed import DistributedSampler
 import math
 
-# data parallel (distribute model across two processes)
-# 1. construct micrbatches, accumulate gradients, & process them in parallel
-# 2. ZeRO - shard optimizer states, gradients, model parameters
 def print_if_rank_0(rank, message):
     if rank == 0:
         print(message)
@@ -20,7 +17,7 @@ def print_if_rank_0(rank, message):
 # We subclass autograd function
 class Copy(torch.autograd.Function):
     """It copies the input tensor to the rank. 
-    While teh forward pass doesn't do anything, the backward pass needs to aggregate gradients. 
+    While the forward pass doesn't do anything, the backward pass needs to aggregate gradients. 
     Thus, Forward is a no-op and backward is an all-reduce. 
 
     Forward: broadcast
@@ -285,12 +282,7 @@ if __name__ == "__main__":
 
     # each rank holds its own portion of the optimizer state.
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
-    
-    # This is data parallel where we overlap computation and communication.
-    # Computation requires forwards and backwards passes.
-    # Communication requires summing gradients and syncing them across ranks.
-    # We do so as soon as the gradients of parameters are computed. Therefore, we need to add a hook to the backward pass of the param. 
-    # This hook initiates communication as soon as the gradients are available.
+
     for epoch in range(2):
         dataloader_iter = iter(dataloader)
         
