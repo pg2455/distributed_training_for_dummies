@@ -1,6 +1,6 @@
 # Distributed Training for Dummies
 
-This repository accompanies the blog post: [Distributed Training for Dummies]([https://www.pgupta.info/blog/2025/distributed-training-dist-0/](https://www.pgupta.info/blog/2025/07/distributed-training-0/)).
+This repository accompanies the blog post: [Distributed Training for Dummies](https://www.pgupta.info/blog/2025/07/distributed-training-0/).
 
 It contains code and hands-on examples to help you understand and experiment with the core concepts of distributed training in deep learning, including:
 - **Data Parallelism**
